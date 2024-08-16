@@ -1,0 +1,7 @@
+repos:
+  - repo: https://github.com/dbt-opiner/dbt-opiner
+    rev: 4212da1
+    hooks:
+      - id: dbt-opiner-lint
+        args: [-f]
+        additional_dependencies: [dbt-duckdb == 1.8.2]

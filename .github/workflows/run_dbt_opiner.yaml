@@ -1,0 +1,108 @@
+name: Run dbt opiner
+
+on:
+    pull_request:
+        branches:
+            - main
+
+permissions:
+  pull-requests: write
+  contents: read
+
+env:
+  PYTHON_VERSION: 3.12
+  DBT_PACKAGE: dbt-duckdb==1.8.2
+  DBT_TARGET: test
+  DBT_OPINER_VERSION: dbt-opiner==0.1.0b0
+
+jobs:
+    dbt_opiner_flow:
+        name: |
+            Run dbt opiner
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: ${{ env.PYTHON_VERSION }}
+            - name: Install dependencies
+              id: install_dependencies
+              run: |
+                  pip install ${{ env.DBT_PACKAGE }}
+                  pip install git+https://github.com/dbt-opiner/dbt-opiner.git
+
+            - name: Get changed files
+              id: changed-files
+              uses: tj-actions/changed-files@v44
+            
+            - name: Run dbt-opiner linter
+              id: dbt-opiner-lint
+              env:
+                ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+              run: |
+                set +e
+                CONCATENATED_FILES=""
+                for file in ${ALL_CHANGED_FILES}; do
+                  CONCATENATED_FILES="$CONCATENATED_FILES $file"
+                done 
+                dbt-opiner lint --target ${{ env.DBT_TARGET}} -o dbt_opiner_lint_output.txt -f $CONCATENATED_FILES 
+                exitcode="$?"
+                echo "linter_exitcode=$exitcode" >> $GITHUB_OUTPUT
+                LINTER_OUTPUT=$(cat dbt_opiner_lint_output.txt)
+                EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+                echo "linter_output<<$EOF" >> $GITHUB_OUTPUT
+                echo "$LINTER_OUTPUT" >> $GITHUB_OUTPUT
+                echo "$EOF" >> $GITHUB_OUTPUT
+                exit "$exitcode"     
+    
+            - name: Post comment on PR
+              if: always()
+              uses: actions/github-script@v6
+              with:
+                script: |
+                  const linterOutput = `${{ steps.dbt-opiner-lint.outputs.linter_output }}`;
+                  const linterExitCode = ${{ steps.dbt-opiner-lint.outputs.linter_exitcode }};
+                  
+                  // Replace with icons
+                  const colorizedOutput = linterOutput
+                    .replace(/WARNING/g, '⚠️')
+                    .replace(/ERROR/g, '❌');
+
+                  let commentBody;
+                  if (linterExitCode == 1) {
+                    commentBody = `
+                    # dbt-opiner Linter Results
+
+                    ## ❌ Some files failed linting
+
+                    ${colorizedOutput}
+
+                    `;
+                  } 
+                  else if (linterOutput.includes('WARNING')) {
+                    commentBody = `
+                    # dbt-opiner Linter Results
+
+                    ## ⚠️ These files can be improved
+
+                    ${colorizedOutput}
+                    
+                    `;
+                  }
+                  else {
+                    commentBody = `
+                    # dbt-opiner Linter Results
+                    ## ✅ All looks good!
+                    `;
+                  };
+                  github.rest.issues.createComment({
+                    issue_number: context.issue.number,
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    body: commentBody
+                  });
+             
