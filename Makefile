@@ -14,7 +14,7 @@ install:
 		pyenv local $$PYTHON_VERSION; \
 		poetry env use $$PYTHON_VERSION; \
 		poetry install --no-root; \
-		duckdb $$dir.duckdb -c "create schema if not exists raw"; \
+		poetry run duckdb $$dir.duckdb -c "create schema if not exists raw"; \
 		cd ../; \
 	done; \
 	cd customers; \
