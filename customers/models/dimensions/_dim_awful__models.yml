@@ -1,7 +1,0 @@
-version: 2
-
-models:
-  - name: dim_awful
-    description: >
-      Summary: This model is an awful model.
-      The granularity of this model is at the customer level.

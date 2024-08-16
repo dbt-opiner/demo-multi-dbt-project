@@ -5,6 +5,9 @@ models:
       Summary: This model is a nice model.
       The granularity of this model is at the order level.
     columns:
+      - name: order_id
+        description: >
+          The unique identifier for the order.
       - name: customer_id
         description: >
           The unique identifier for the customer.
