@@ -1,0 +1,12 @@
+models:
+  - name: dim_customers
+    description: >
+     Summary: Customer dimension table
+     
+    columns:
+      - name: first_name
+        description: >
+          First name of the customer
+      - name: last_name
+        description: >
+          Last name of the customer

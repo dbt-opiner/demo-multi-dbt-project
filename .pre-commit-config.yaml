@@ -1,9 +1,9 @@
 repos:
   - repo: https://github.com/dbt-opiner/dbt-opiner
-    rev: 3e6d992
+    rev: fb7c053
     hooks:
       - id: dbt-opiner-lint
-        args: [-f]
+        args: ["--force-compile", "-f"]
         additional_dependencies: [dbt-duckdb == 1.8.2]
 
   - repo: https://github.com/tconbeer/sqlfmt
