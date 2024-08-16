@@ -15,6 +15,6 @@ opinions_config:
     #rev: 2348b98 # Tag or commit sha, not branches.
 
 files:
-  sql: ".*/(models|macros|tests)/.*" # Exlcide sql files that don't match this regex
+  sql: ".*(models|macros|tests)/.*" # Exlcude sql files that don't match this regex
   #yaml:
   #md:

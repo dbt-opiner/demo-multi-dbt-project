@@ -360,7 +360,7 @@ sqlglot = "^25.10.0"
 type = "git"
 url = "https://github.com/dbt-opiner/dbt-opiner.git"
 reference = "main"
-resolved_reference = "3950ed41b8c8aea049b1e4f7f023c47214d54fca"
+resolved_reference = "3e6d99288670749d829bb6d99f4f337c5361a638"
 
 [[package]]
 name = "dbt-semantic-interfaces"
