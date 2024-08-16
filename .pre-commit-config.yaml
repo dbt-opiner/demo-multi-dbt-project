@@ -5,3 +5,12 @@ repos:
       - id: dbt-opiner-lint
         args: [-f]
         additional_dependencies: [dbt-duckdb == 1.8.2]
+
+  - repo: https://github.com/tconbeer/sqlfmt
+    rev: v0.19.2
+    hooks:
+      - id: sqlfmt
+        language_version: python
+        additional_dependencies: [".[jinjafmt]"]
+        files: ^.*/(models|macros)/.*$ # only run in models and macros folder
+        args: ["-l", "99"]

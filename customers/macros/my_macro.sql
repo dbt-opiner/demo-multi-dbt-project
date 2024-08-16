@@ -1,3 +1,4 @@
 {% macro my_macro() %}
-  SELECT 1 AS one;
+    select 1 as one
+    ;
 {% endmacro %}
