@@ -1,4 +1,3 @@
--- noqa: dbt-opiner O001
 with source as (
 
     select * from {{ source('raw', 'customers') }}
