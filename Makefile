@@ -2,6 +2,7 @@ DEFAULT_PYTHON_VERSION = 3.12.2
 DIRS = customers orders
 
 install:
+	pre-commit install
 	for dir in $(DIRS); do \
 		cd $$dir; \
 		if [ -f .python-version ]; then \

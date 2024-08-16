@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/dbt-opiner/dbt-opiner
-    rev: 4212da1
+    rev: fb7c053
     hooks:
       - id: dbt-opiner-lint
         args: [-f]
