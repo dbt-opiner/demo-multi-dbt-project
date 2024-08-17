@@ -1,11 +1,14 @@
 version: 2
 
 models:
-  - name: dim_awfuls
+  - name: dim_awful
     description: >
       Summary: This model is an awful model.
       Granularity: One customer per row.
     columns:
+      - name: customer_id
+        description: >
+          The unique identifier for the customer.
       - name: first_name
         description: >
           The first name of the customer.
