@@ -1,4 +1,3 @@
--- noqa: dbt-opiner C001
 {{
     config(
         unique_key="order_id",
