@@ -66,7 +66,7 @@ jobs:
                 script: |
                   const linterOutput = `${{ steps.dbt-opiner-lint.outputs.linter_output }}`;
                   const linterExitCode = ${{ steps.dbt-opiner-lint.outputs.linter_exitcode }};
-                  
+                  const WATERMARK = `# dbt-opiner Linter Results`;
                   // Replace with icons
                   const colorizedOutput = linterOutput
                     .replace(/WARNING/g, '⚠️')
@@ -74,8 +74,7 @@ jobs:
 
                   let commentBody;
                   if (linterExitCode == 1) {
-                    commentBody = `
-                    # dbt-opiner Linter Results
+                    commentBody = WATERMARK + `
 
                     ## ❌ Some files failed linting
 
@@ -84,8 +83,7 @@ jobs:
                     `;
                   } 
                   else if (linterOutput.includes('WARNING')) {
-                    commentBody = `
-                    # dbt-opiner Linter Results
+                    commentBody = WATERMARK + `
 
                     ## ⚠️ These files can be improved
 
@@ -94,15 +92,30 @@ jobs:
                     `;
                   }
                   else {
-                    commentBody = `
-                    # dbt-opiner Linter Results
+                    commentBody = WATERMARK + `
                     ## ✅ All looks good!
                     `;
                   };
-                  github.rest.issues.createComment({
-                    issue_number: context.issue.number,
-                    owner: context.repo.owner,
-                    repo: context.repo.repo,
-                    body: commentBody
+                  const { data: comments } = await github.rest.issues.listComments({
+                      issue_number: context.issue.number,
+                      owner: context.repo.owner,
+                      repo: context.repo.repo
                   });
-             
+                  const comment = comments.find((c) => c.body.startsWith(WATERMARK));
+                  if (comment) {
+                    core.info('Previous comment found, updating it');
+                    await github.rest.issues.updateComment({
+                      comment_id: comment.id,  
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      body: commentBody
+                    });
+                  } else {
+                    core.info('No previous comment found, creating a new one');
+                    await github.rest.issues.createComment({
+                      issue_number: context.issue.number,
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      body: commentBody
+                    });
+                  };
