@@ -64,6 +64,8 @@ jobs:
               uses: actions/github-script@v6
               with:
                 script: |
+                  const github = require('@actions/github');
+                  const octokit = github.getOctokit(token);
                   const linterOutput = `${{ steps.dbt-opiner-lint.outputs.linter_output }}`;
                   const linterExitCode = ${{ steps.dbt-opiner-lint.outputs.linter_exitcode }};
                   const WATERMARK = 'dbt-opiner Linter Results';
