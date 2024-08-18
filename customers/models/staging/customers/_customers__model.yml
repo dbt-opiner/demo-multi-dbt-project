@@ -9,3 +9,12 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: first_name
+        description: First name of the customer
+        data_tests:
+          - not_null
+      - name: last_name
+        description: Last name of the customer
+        data_tests:
+          - not_null
+      
