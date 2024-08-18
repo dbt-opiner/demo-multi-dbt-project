@@ -64,10 +64,9 @@ jobs:
               uses: actions/github-script@v6
               with:
                 script: |
-                  const octokit = github.getOctokit(token);
                   const linterOutput = `${{ steps.dbt-opiner-lint.outputs.linter_output }}`;
                   const linterExitCode = ${{ steps.dbt-opiner-lint.outputs.linter_exitcode }};
-                  const WATERMARK = 'dbt-opiner Linter Results';
+                  const WATERMARK = `## dbt-opiner Linter Results`;
                   // Replace with icons
                   const colorizedOutput = linterOutput
                     .replace(/WARNING/g, '⚠️')
@@ -107,7 +106,6 @@ jobs:
                   });
                   const comment = comments.find((c) => c.body.startsWith());
                   if (comment) {
-                    core.info('Previous comment found, updating it');
                     await github.rest.issues.updateComment({
                       comment_id: comment.id,  
                       owner: context.repo.owner,
@@ -115,7 +113,6 @@ jobs:
                       body: commentBody
                     });
                   } else {
-                    core.info('No previous comment found, creating a new one');
                     await github.rest.issues.createComment({
                       issue_number: context.issue.number,
                       owner: context.repo.owner,
