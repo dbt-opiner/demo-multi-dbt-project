@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: >
+     Customer dimension table
+    columns:
+      - name: customer_id
+        description: >
+          Unique identifier for the customer
+        data_tests:
+          - unique
+          - not_null
