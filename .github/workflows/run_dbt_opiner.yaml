@@ -101,8 +101,7 @@ jobs:
                       owner: context.repo.owner,
                       repo: context.repo.repo
                   });
-                  core.info(JSON.stringify(comments, null, 2));
-                  const comment = comments.find((c) => c.body.startsWith());
+                  const comment = comments.find((c) => c.body.startsWith(WATERMARK));
                   if (comment) {
                     core.info('Previous comment found, updating it');
                     await github.rest.issues.updateComment({
