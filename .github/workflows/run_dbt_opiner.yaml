@@ -74,8 +74,7 @@ jobs:
 
                   let commentBody;
                   if (linterExitCode == 1) {
-                    commentBody = `
-                    # dbt-opiner Linter Results
+                    commentBody = WATERMARK + `
 
                     ## ❌ Some files failed linting
 
@@ -84,8 +83,7 @@ jobs:
                     `;
                   } 
                   else if (linterOutput.includes('WARNING')) {
-                    commentBody = `
-                    # dbt-opiner Linter Results
+                    commentBody = WATERMARK + `
 
                     ## ⚠️ These files can be improved
 
@@ -94,8 +92,7 @@ jobs:
                     `;
                   }
                   else {
-                    commentBody = `
-                    # dbt-opiner Linter Results
+                    commentBody = WATERMARK + `
                     ## ✅ All looks good!
                     `;
                   };
@@ -104,7 +101,7 @@ jobs:
                       owner: context.repo.owner,
                       repo: context.repo.repo
                   });
-                  core.info(comments);
+                  core.info(JSON.stringify(comments, null, 2));
                   const comment = comments.find((c) => c.body.startsWith());
                   if (comment) {
                     core.info('Previous comment found, updating it');
