@@ -104,7 +104,7 @@ jobs:
                       owner: context.repo.owner,
                       repo: context.repo.repo
                   });
-                  core.info(comments.find(c));
+                  core.info(comments);
                   const comment = comments.find((c) => c.body.startsWith());
                   if (comment) {
                     core.info('Previous comment found, updating it');
