@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/dbt-opiner/dbt-opiner
-    rev: fb7c053
+    rev: 0.1.0
     hooks:
       - id: dbt-opiner-lint
         args: ["--force-compile", "-f"]
