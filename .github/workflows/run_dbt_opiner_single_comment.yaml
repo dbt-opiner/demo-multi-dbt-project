@@ -46,9 +46,12 @@ jobs:
               run: |
                 set +e
                 CONCATENATED_FILES=""
+                if [ -z "${ALL_CHANGED_FILES}" ]; then
+                  ALL_CHANGED_FILES="."
+                fi
                 for file in ${ALL_CHANGED_FILES}; do
                   CONCATENATED_FILES="$CONCATENATED_FILES $file"
-                done 
+                done
                 dbt-opiner lint --target ${{ env.DBT_TARGET}} -o dbt_opiner_lint_output.txt -f $CONCATENATED_FILES 
                 exitcode="$?"
                 echo "linter_exitcode=$exitcode" >> $GITHUB_OUTPUT

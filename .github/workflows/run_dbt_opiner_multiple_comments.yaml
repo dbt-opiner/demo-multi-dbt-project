@@ -46,6 +46,9 @@ jobs:
               run: |
                 set +e
                 CONCATENATED_FILES=""
+                if [ -z "${ALL_CHANGED_FILES}" ]; then
+                  ALL_CHANGED_FILES="."
+                fi
                 for file in ${ALL_CHANGED_FILES}; do
                   CONCATENATED_FILES="$CONCATENATED_FILES $file"
                 done 
