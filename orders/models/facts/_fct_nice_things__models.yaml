@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: fct_nice_things
+    description: >
+      Summary: This model is a nice model.
+      The granularity of this model is at the order level.
+    columns:
+      - name: order_id
+        description: >
+          The unique identifier for the order.
+      - name: customer_id
+        description: >
+          The unique identifier for the customer.
+      - name: order_date
+        description: >
+          The date the order was placed.
+      - name: status
+        description: >
+          The status of the order. 
+          One of: 'placed', 'shipped', 'completed', 'return_pending', 'returned'
