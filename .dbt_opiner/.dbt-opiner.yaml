@@ -11,7 +11,7 @@ opinions_config:
       - granularity
   custom_opinions:
     source: git
-    repository: https://github.com/dbt-opiner/dbt-opiner-custom-opinions.git
+    repository: https://github.com/rloredo/private_test.git
     #rev: 2348b98 # Tag or commit sha, not branches.
 
 files:
